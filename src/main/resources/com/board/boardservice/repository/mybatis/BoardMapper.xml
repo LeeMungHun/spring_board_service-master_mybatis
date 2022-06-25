@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.board.boardservice.repository.mybatis.BoardMapper">
+
+    <insert id="save" useGeneratedKeys="true" keyProperty="id">
+        insert into board(content,title,writer)
+        values (#{content},#{title},#{writer})
+    </insert>
+    <update id="update">
+        update board
+        set title = #{updateParam.title},
+            content = #{updateParam.content},
+            writer = #{updateParam.writer}
+        where id = #{id}
+    </update>
+    <select id="findByTitle" resultType="Board">
+        select *
+        from board
+        <where>
+            <if test="title != null and title != ''">
+                and title like concat('%',#{title},'%')
+            </if>
+        </where>
+    </select>
+    <select id="findAll" resultType="Board">
+        select *
+        from board
+    </select>
+
+    <select id="findById" resultType="Board">
+        select *
+        from board
+        where id = #{id};
+    </select>
+
+    <select id="count" resultType="Board">
+        select count(*)
+        from board
+    </select>
+
+    <delete id="deleteById">
+        DELETE FROM board
+        WHERE id = #{id};
+    </delete>
+
+</mapper>
